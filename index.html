@@ -117,6 +117,18 @@ body {
     margin-bottom:25px;
 }
 
+/* Personalized message below gallery */
+.personal-message {
+    background:#e0f7fa;
+    padding:20px;
+    border-left:8px solid #00bcd4;
+    font-size:clamp(16px,1.6vw,20px);
+    line-height:1.7;
+    border-radius:12px;
+    margin:20px 0;
+}
+
+/* Gallery */
 .gallery {
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -172,9 +184,51 @@ body {
 }
 
 /* Fade-in animation */
-@keyframes fadeIn {
-    from {opacity:0;}
-    to {opacity:1;}
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    opacity: 0.8;
+    z-index: 9999;
+    pointer-events: none;
+    border-radius: 50%;
+    animation: fall 5s linear infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-10vh) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* Balloons */
+.balloon {
+    position: fixed;
+    width: 40px;
+    height: 55px;
+    background-color: red;
+    border-radius: 50% 50% 50% 50%;
+    bottom: -60px;
+    z-index: 998;
+    animation: floatUp linear infinite;
+}
+.balloon::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 15px;
+    background: #333;
+    left: 50%;
+    bottom: -15px;
+    transform: translateX(-50%);
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(-5deg); }
+    100% { transform: translateY(-120vh) rotate(10deg); }
 }
 </style>
 </head>
@@ -215,6 +269,13 @@ body {
                 <img src="https://raw.githubusercontent.com/Developer-Deepali1/Birthday-pics/main/S8.jpeg">
             </div>
 
+            <div class="personal-message">
+                Sir, Wishing you a day filled with joy, laughter, and all the happiness you bring to others every day.  
+                Your guidance, wisdom, and kindness inspire me endlessly, and I am truly grateful for everything I’ve learned from you.  
+                May this year bless you with good health, success, and countless memorable moments.  
+                Thank you for being such an amazing mentor and role model.
+            </div>
+
             <div class="footer">— Deepali 💐</div>
         </div>
 
@@ -245,7 +306,8 @@ function openCard(e){
     const music = document.getElementById("bgMusic");
     music.play().catch(err=>console.log("Autoplay blocked", err));
 
-    // Confetti and balloons can be added here if needed
+    createConfetti(100); // 100 pieces
+    createBalloons(10);  // 10 balloons
 }
 
 // Toggle open/close
@@ -269,11 +331,41 @@ gallery.addEventListener("click", function(e){
 popup.addEventListener("click", function(){
     popup.style.display="none";
 });
+
+// Confetti function
+function createConfetti(count){
+    for(let i=0;i<count;i++){
+        const conf = document.createElement("div");
+        conf.className="confetti";
+        conf.style.left=Math.random()*100+"vw";
+        conf.style.backgroundColor=randomColor();
+        conf.style.animationDuration=(3+Math.random()*2)+"s";
+        document.body.appendChild(conf);
+        setTimeout(()=>conf.remove(),5000);
+    }
+}
+
+// Balloons function
+function createBalloons(count){
+    const colors=["#FF0000","#FF69B4","#FFD700","#00BFFF","#32CD32","#FF8C00"];
+    for(let i=0;i<count;i++){
+        const balloon=document.createElement("div");
+        balloon.className="balloon";
+        balloon.style.left=Math.random()*90+"vw";
+        balloon.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+        balloon.style.animationDuration=(5+Math.random()*3)+"s";
+        document.body.appendChild(balloon);
+        setTimeout(()=>balloon.remove(),8000);
+    }
+}
+
+// Random color generator
+function randomColor(){
+    const colors=["#FF0000","#FF69B4","#FFD700","#00BFFF","#32CD32","#FF8C00"];
+    return colors[Math.floor(Math.random()*colors.length)];
+}
 </script>
 
 </body>
 </html>
-
-
-
 
